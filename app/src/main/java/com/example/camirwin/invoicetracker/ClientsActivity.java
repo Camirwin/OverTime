@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
 
 public class ClientsActivity extends ListActivity {
@@ -43,4 +45,11 @@ public class ClientsActivity extends ListActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Intent intent = new Intent(this, ClientActivity.class);
+        startActivity(intent);
+    }
+
 }
