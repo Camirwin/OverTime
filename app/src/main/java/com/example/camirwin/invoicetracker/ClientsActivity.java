@@ -1,6 +1,7 @@
 package com.example.camirwin.invoicetracker;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,11 @@ public class ClientsActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clients);
+
+        String[] list = new String[] { "temp" };
+
+        ClientAdapter adapter = new ClientAdapter(this, list);
+        setListAdapter(adapter);
     }
 
 
@@ -32,7 +38,8 @@ public class ClientsActivity extends ListActivity {
             return true;
         }
         else if (id == R.id.action_add_client) {
-
+            Intent intent = new Intent(this, CreateClientActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

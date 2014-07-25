@@ -2,16 +2,24 @@ package com.example.camirwin.invoicetracker;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.example.camirwin.invoicetracker.R;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class CreateClientActivity extends Activity {
+
+    TextView tvClientName;
+    EditText etClientName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_client);
+
+        tvClientName = (TextView) findViewById(R.id.tvClientName);
+        etClientName = (EditText) findViewById(R.id.etClientName);
     }
 
 
@@ -30,6 +38,16 @@ public class CreateClientActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        }
+        else if (id == R.id.action_create_client) {
+            if (!etClientName.getText().toString().isEmpty()) {
+                NavUtils.navigateUpFromSameTask(this);
+            } else {
+                etClientName.setError("Client name required");
+            }
+        }
+        else if (id == R.id.action_cancel) {
+            NavUtils.navigateUpFromSameTask(this);
         }
         return super.onOptionsItemSelected(item);
     }
