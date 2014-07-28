@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.camirwin.invoicetracker.ClientActivity">
+    tools:context="com.example.camirwin.invoicetracker.activity.ClientActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffcecece"
+        android:background="#ffb4b4b4"
         android:padding="5dp"
         android:text="OUTSTANDING BALANCE"
         android:textStyle="bold" />
@@ -26,12 +26,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Total"
+            android:textStyle="bold"
             android:textSize="25sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$2,500.00"
+            android:textStyle="bold"
             android:textColor="#ff07af08"
             android:textSize="25sp" />
 
@@ -50,14 +52,14 @@
             android:layout_weight="1"
             android:text="services"
             android:textColor="#64000000"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$1,500.00"
             android:textColor="#6407af08"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -74,14 +76,14 @@
             android:layout_weight="1"
             android:text="deliverables"
             android:textColor="#64000000"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$750.00"
             android:textColor="#6407af08"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -99,21 +101,21 @@
             android:layout_weight="1"
             android:text="expenses"
             android:textColor="#64000000"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$250.00"
             android:textColor="#6407af08"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffcecece"
+        android:background="#ffb4b4b4"
         android:padding="5dp"
         android:text="PREVIOUS INVOICES"
         android:textStyle="bold" />

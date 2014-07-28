@@ -1,8 +1,13 @@
-package com.example.camirwin.invoicetracker;
+package com.example.camirwin.invoicetracker.adapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
+
+import com.example.camirwin.invoicetracker.fragment.DeliverablesFragment;
+import com.example.camirwin.invoicetracker.fragment.ExpensesFragment;
+import com.example.camirwin.invoicetracker.fragment.OverviewFragment;
+import com.example.camirwin.invoicetracker.fragment.ServicesFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 

@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ClientsActivity"
+            android:name=".activity.ClientsActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,17 +17,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateClientActivity"
+            android:name=".activity.CreateClientActivity"
             android:label="@string/title_activity_create_client"
-            android:parentActivityName=".ClientsActivity" >
+            android:parentActivityName=".activity.ClientsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.camirwin.invoicetracker.ClientsActivity" />
         </activity>
         <activity
-            android:name=".ClientActivity"
+            android:name=".activity.ClientActivity"
             android:label="@string/title_activity_client"
-            android:parentActivityName=".ClientsActivity" >
+            android:parentActivityName=".activity.ClientsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.camirwin.invoicetracker.ClientsActivity" />

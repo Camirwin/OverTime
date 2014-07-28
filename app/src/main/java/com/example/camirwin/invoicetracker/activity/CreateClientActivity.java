@@ -1,4 +1,4 @@
-package com.example.camirwin.invoicetracker;
+package com.example.camirwin.invoicetracker.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.camirwin.invoicetracker.R;
 
 public class CreateClientActivity extends Activity {
 

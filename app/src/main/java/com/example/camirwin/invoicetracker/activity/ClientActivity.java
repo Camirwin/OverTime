@@ -1,4 +1,4 @@
-package com.example.camirwin.invoicetracker;
+package com.example.camirwin.invoicetracker.activity;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -9,11 +9,18 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.camirwin.invoicetracker.fragment.DeliverablesFragment;
+import com.example.camirwin.invoicetracker.fragment.ExpensesFragment;
+import com.example.camirwin.invoicetracker.fragment.OverviewFragment;
+import com.example.camirwin.invoicetracker.R;
+import com.example.camirwin.invoicetracker.fragment.ServicesFragment;
+import com.example.camirwin.invoicetracker.adapter.TabsPagerAdapter;
+
 public class ClientActivity extends FragmentActivity implements ActionBar.TabListener,
-                                                DeliverablesFragment.OnFragmentInteractionListener,
-                                                OverviewFragment.OnFragmentInteractionListener,
-                                                ExpensesFragment.OnFragmentInteractionListener,
-                                                ServicesFragment.OnFragmentInteractionListener {
+        DeliverablesFragment.OnFragmentInteractionListener,
+        OverviewFragment.OnFragmentInteractionListener,
+        ExpensesFragment.OnFragmentInteractionListener,
+        ServicesFragment.OnFragmentInteractionListener {
 
     ActionBar actionBar;
     private TabsPagerAdapter mAdapter;

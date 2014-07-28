@@ -1,25 +1,27 @@
-package com.example.camirwin.invoicetracker;
+package com.example.camirwin.invoicetracker.fragment;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-
+import com.example.camirwin.invoicetracker.R;
+import com.example.camirwin.invoicetracker.adapter.InvoiceAdapter;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link android.app.Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ServicesFragment.OnFragmentInteractionListener} interface
+ * {@link com.example.camirwin.invoicetracker.fragment.ExpensesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ServicesFragment#newInstance} factory method to
+ * Use the {@link com.example.camirwin.invoicetracker.fragment.ExpensesFragment#newInstance} factory method to
  * create an instance of this fragment.
  *
  */
-public class ServicesFragment extends Fragment {
+public class OverviewFragment extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,18 +39,18 @@ public class ServicesFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ServicesFragment.
+     * @return A new instance of fragment ExpensesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ServicesFragment newInstance(String param1, String param2) {
-        ServicesFragment fragment = new ServicesFragment();
+    public static OverviewFragment newInstance(String param1, String param2) {
+        OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-    public ServicesFragment() {
+    public OverviewFragment() {
         // Required empty public constructor
     }
 
@@ -65,7 +67,13 @@ public class ServicesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_services, container, false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_overview, container, false);
+
+        String[] list = new String[] { "temp" };
+        InvoiceAdapter adapter = new InvoiceAdapter(getActivity(), list);
+        setListAdapter(adapter);
+
+        return layout;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -108,3 +116,4 @@ public class ServicesFragment extends Fragment {
     }
 
 }
+

@@ -1,4 +1,4 @@
-package com.example.camirwin.invoicetracker;
+package com.example.camirwin.invoicetracker.activity;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+
+import com.example.camirwin.invoicetracker.adapter.ClientAdapter;
+import com.example.camirwin.invoicetracker.R;
 
 
 public class ClientsActivity extends ListActivity {

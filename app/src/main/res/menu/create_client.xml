@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.camirwin.invoicetracker.CreateClientActivity" >
+    tools:context="com.example.camirwin.invoicetracker.activity.CreateClientActivity" >
     <item android:id="@+id/action_cancel"
         android:title="Cancel"
         android:icon="@drawable/ic_action_cancel"
