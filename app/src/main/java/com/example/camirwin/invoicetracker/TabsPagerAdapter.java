@@ -14,7 +14,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new InvoicesFragment();
+                return new OverviewFragment();
             case 1:
                 return new ServicesFragment();
             case 2:

@@ -16,7 +16,7 @@ public class CreateClientActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_client);
+        setContentView(R.layout.activity_client_create);
 
         tvClientName = (TextView) findViewById(R.id.tvClientName);
         etClientName = (EditText) findViewById(R.id.etClientName);
