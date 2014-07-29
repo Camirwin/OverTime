@@ -8,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.camirwin.invoicetracker.R;
 import com.example.camirwin.invoicetracker.adapter.InvoiceAdapter;
+import com.example.camirwin.invoicetracker.model.Client;
+
+import java.text.DecimalFormat;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -31,6 +35,8 @@ public class OverviewFragment extends ListFragment {
     private String mParam1;
     private String mParam2;
 
+    Client client;
+
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -50,6 +56,11 @@ public class OverviewFragment extends ListFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    public OverviewFragment(Client client) {
+        this.client = client;
+    }
+
     public OverviewFragment() {
         // Required empty public constructor
     }
@@ -72,6 +83,13 @@ public class OverviewFragment extends ListFragment {
         String[] list = new String[] { "temp" };
         InvoiceAdapter adapter = new InvoiceAdapter(getActivity(), list);
         setListAdapter(adapter);
+
+        TextView tvClientOutstandingBalance = (TextView) layout.findViewById(R.id.tvClientOutstandingBalance);
+
+        if (client.getOutstandingBalance() != null) {
+            DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+            tvClientOutstandingBalance.setText("$" + decimalFormat.format(client.getOutstandingBalance()));
+        }
 
         return layout;
     }

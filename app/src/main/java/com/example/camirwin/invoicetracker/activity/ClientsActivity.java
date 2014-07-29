@@ -10,18 +10,28 @@ import android.widget.ListView;
 
 import com.example.camirwin.invoicetracker.adapter.ClientAdapter;
 import com.example.camirwin.invoicetracker.R;
+import com.example.camirwin.invoicetracker.db.InvoiceTrackerDataSource;
+import com.example.camirwin.invoicetracker.model.Client;
+
+import java.util.ArrayList;
 
 
 public class ClientsActivity extends ListActivity {
+
+    public static final String CLIENT_ID = "client_id";
+
+    InvoiceTrackerDataSource dataSource;
+    ArrayList<Client> clients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clients);
 
-        String[] list = new String[] { "temp" };
+        dataSource = new InvoiceTrackerDataSource(this);
+        clients = dataSource.getAllClients();
 
-        ClientAdapter adapter = new ClientAdapter(this, list);
+        ClientAdapter adapter = new ClientAdapter(this, clients);
         setListAdapter(adapter);
     }
 
@@ -52,7 +62,25 @@ public class ClientsActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(this, ClientActivity.class);
+        intent.putExtra(CLIENT_ID, clients.get(position).getId());
         startActivity(intent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dataSource.close();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dataSource.open();
+
+        clients = dataSource.getAllClients();
+
+        ClientAdapter adapter = new ClientAdapter(this, clients);
+        setListAdapter(adapter);
     }
 
 }

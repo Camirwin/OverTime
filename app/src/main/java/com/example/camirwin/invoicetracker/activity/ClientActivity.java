@@ -9,12 +9,14 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.camirwin.invoicetracker.db.InvoiceTrackerDataSource;
 import com.example.camirwin.invoicetracker.fragment.DeliverablesFragment;
 import com.example.camirwin.invoicetracker.fragment.ExpensesFragment;
 import com.example.camirwin.invoicetracker.fragment.OverviewFragment;
 import com.example.camirwin.invoicetracker.R;
 import com.example.camirwin.invoicetracker.fragment.ServicesFragment;
 import com.example.camirwin.invoicetracker.adapter.TabsPagerAdapter;
+import com.example.camirwin.invoicetracker.model.Client;
 
 public class ClientActivity extends FragmentActivity implements ActionBar.TabListener,
         DeliverablesFragment.OnFragmentInteractionListener,
@@ -24,6 +26,8 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
 
     ActionBar actionBar;
     private TabsPagerAdapter mAdapter;
+    InvoiceTrackerDataSource dataSource;
+    Client client;
 
     String[] tabs = { "OVERVIEW", "SERVICES", "DELIVERABLES", "EXPENSES"};
 
@@ -37,11 +41,15 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
 
+        dataSource = new InvoiceTrackerDataSource(this);
+        client = dataSource.getClientById(getIntent().getIntExtra(ClientsActivity.CLIENT_ID, 0));
+
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mAdapter = new TabsPagerAdapter(getFragmentManager());
+        mAdapter = new TabsPagerAdapter(getFragmentManager(), client);
         mViewPager.setAdapter(mAdapter);
 
         actionBar = getActionBar();
+        actionBar.setTitle(client.getName());
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         for (String tab : tabs) {

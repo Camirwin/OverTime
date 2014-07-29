@@ -9,19 +9,33 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.camirwin.invoicetracker.R;
+import com.example.camirwin.invoicetracker.db.InvoiceTrackerDataSource;
+import com.example.camirwin.invoicetracker.model.Client;
 
 public class CreateClientActivity extends Activity {
 
-    TextView tvClientName;
     EditText etClientName;
+    EditText etClientLocation;
+    EditText etClientContactFirstName;
+    EditText etClientContactLastName;
+    EditText etClientContactEmail;
+    EditText etClientContactPhone;
+
+    InvoiceTrackerDataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_create);
 
-        tvClientName = (TextView) findViewById(R.id.tvClientName);
+        dataSource = new InvoiceTrackerDataSource(this);
+
         etClientName = (EditText) findViewById(R.id.etClientName);
+        etClientLocation = (EditText) findViewById(R.id.etClientLocation);
+        etClientContactFirstName = (EditText) findViewById(R.id.etClientContactFirstName);
+        etClientContactLastName = (EditText) findViewById(R.id.etClientContactLastName);
+        etClientContactEmail = (EditText) findViewById(R.id.etClientContactEmail);
+        etClientContactPhone = (EditText) findViewById(R.id.etClientContactPhone);
     }
 
 
@@ -43,6 +57,16 @@ public class CreateClientActivity extends Activity {
         }
         else if (id == R.id.action_create_client) {
             if (!etClientName.getText().toString().isEmpty()) {
+                Client client = new Client();
+                client.setName(etClientName.getText().toString());
+                client.setLocation(etClientLocation.getText().toString());
+                client.setContactFirstName(etClientContactFirstName.getText().toString());
+                client.setContactLastName(etClientContactLastName.getText().toString());
+                client.setContactEmail(etClientContactEmail.getText().toString());
+                client.setContactPhone(etClientContactPhone.getText().toString());
+
+                dataSource.createClient(client);
+
                 NavUtils.navigateUpFromSameTask(this);
             } else {
                 etClientName.setError("Client name required");
@@ -53,4 +77,17 @@ public class CreateClientActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dataSource.close();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dataSource.open();
+    }
+
 }

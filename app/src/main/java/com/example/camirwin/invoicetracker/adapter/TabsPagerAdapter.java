@@ -8,18 +8,22 @@ import com.example.camirwin.invoicetracker.fragment.DeliverablesFragment;
 import com.example.camirwin.invoicetracker.fragment.ExpensesFragment;
 import com.example.camirwin.invoicetracker.fragment.OverviewFragment;
 import com.example.camirwin.invoicetracker.fragment.ServicesFragment;
+import com.example.camirwin.invoicetracker.model.Client;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
-    public TabsPagerAdapter(FragmentManager fm) {
+    Client client;
+
+    public TabsPagerAdapter(FragmentManager fm, Client client) {
         super(fm);
+        this.client = client;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new OverviewFragment();
+                return new OverviewFragment(client);
             case 1:
                 return new ServicesFragment();
             case 2:

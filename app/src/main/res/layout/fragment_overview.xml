@@ -30,9 +30,10 @@
             android:textSize="25sp" />
 
         <TextView
+            android:id="@+id/tvClientOutstandingBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$2,500.00"
+            android:text="$0.00"
             android:textStyle="bold"
             android:textColor="#ff07af08"
             android:textSize="25sp" />
@@ -57,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$1,500.00"
+            android:text="$0.00"
             android:textColor="#6407af08"
             android:textSize="12sp" />
 
@@ -81,7 +82,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$750.00"
+            android:text="$0.00"
             android:textColor="#6407af08"
             android:textSize="12sp" />
 
@@ -106,7 +107,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$250.00"
+            android:text="$0.00"
             android:textColor="#6407af08"
             android:textSize="12sp" />
 

@@ -31,7 +31,6 @@
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <TextView
-                    android:id="@+id/tvClientName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -55,6 +54,7 @@
                     android:orientation="horizontal">
 
                     <EditText
+                        android:id="@+id/etClientLocation"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -96,24 +96,25 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="FIRST" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="FIRST" />
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
+                        <EditText
+                            android:id="@+id/etClientContactFirstName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -123,6 +124,7 @@
                             android:text="LAST" />
 
                         <EditText
+                            android:id="@+id/etClientContactLastName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName" />
@@ -138,6 +140,7 @@
                     android:text="EMAIL" />
 
                 <EditText
+                    android:id="@+id/etClientContactEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />
@@ -149,6 +152,7 @@
                     android:text="PHONE" />
 
                 <EditText
+                    android:id="@+id/etClientContactPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number" />

@@ -1,22 +1,24 @@
 package com.example.camirwin.invoicetracker.model;
 
+import java.util.Date;
+
 public class Client {
 
-    private int Id;
+    private Integer Id;
     private String Name;
     private String Location;
     private String ContactFirstName;
     private String ContactLastName;
     private String ContactEmail;
     private String ContactPhone;
-    private double OutstandingBalance;
-    private long LastInvoiceDate;
+    private Double OutstandingBalance;
+    private Long LastInvoiceDate;
 
-    public int getId() {
+    public Integer getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         Id = id;
     }
 
@@ -68,20 +70,24 @@ public class Client {
         ContactPhone = contactPhone;
     }
 
-    public double getOutstandingBalance() {
+    public Double getOutstandingBalance() {
         return OutstandingBalance;
     }
 
-    public void setOutstandingBalance(double outstandingBalance) {
+    public void setOutstandingBalance(Double outstandingBalance) {
         OutstandingBalance = outstandingBalance;
     }
 
-    public long getLastInvoiceDate() {
+    public Long getLastInvoiceDate() {
         return LastInvoiceDate;
     }
 
-    public void setLastInvoiceDate(long lastInvoiceDate) {
+    public void setLastInvoiceDate(Long lastInvoiceDate) {
         LastInvoiceDate = lastInvoiceDate;
+    }
+
+    public Date getLastInvoiceAsDateObject() {
+        return new Date(getLastInvoiceDate());
     }
 
 }

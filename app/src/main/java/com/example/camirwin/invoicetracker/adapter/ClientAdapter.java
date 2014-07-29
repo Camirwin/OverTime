@@ -8,14 +8,22 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.camirwin.invoicetracker.R;
+import com.example.camirwin.invoicetracker.model.Client;
 
-public class ClientAdapter extends ArrayAdapter<String> {
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Locale;
+
+public class ClientAdapter extends ArrayAdapter<Client> {
 
     private final Context context;
+    private final ArrayList<Client> clients;
 
-    public ClientAdapter(Context context, String[] objects) {
-        super(context, R.layout.row_client, objects);
+    public ClientAdapter(Context context, ArrayList<Client> clients) {
+        super(context, R.layout.row_client, clients);
         this.context = context;
+        this.clients = clients;
     }
 
     @Override
@@ -24,14 +32,29 @@ public class ClientAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.row_client, parent, false);
 
         TextView tvClientName = (TextView) rowView.findViewById(R.id.tvClientName);
-        tvClientName.setText(tvClientName.getText() + " " + (position+1));
+        TextView tvClientLastInvoice = (TextView) rowView.findViewById(R.id.tvClientLastInvoice);
+        TextView tvClientOustandingBalance = (TextView) rowView.findViewById(R.id.tvClientOutstandingBalance);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM yyyy, h:mm a", Locale.US);
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+
+        Client client = clients.get(position);
+
+        tvClientName.setText(client.getName());
+
+        if (client.getLastInvoiceDate() == null) {
+            tvClientLastInvoice.setText("Never");
+        } else {
+            tvClientLastInvoice.setText(dateFormat.format(client.getLastInvoiceAsDateObject()));
+        }
+
+        if (client.getOutstandingBalance() == null) {
+            tvClientOustandingBalance.setText("$" + decimalFormat.format(0));
+        } else {
+            tvClientOustandingBalance.setText("$" + decimalFormat.format(client.getOutstandingBalance()));
+        }
 
         return rowView;
-    }
-
-    @Override
-    public int getCount() {
-        return 15;
     }
 
 }
