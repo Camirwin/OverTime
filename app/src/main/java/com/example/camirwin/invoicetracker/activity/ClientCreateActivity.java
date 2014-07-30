@@ -6,13 +6,12 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.camirwin.invoicetracker.R;
 import com.example.camirwin.invoicetracker.db.InvoiceTrackerDataSource;
 import com.example.camirwin.invoicetracker.model.Client;
 
-public class CreateClientActivity extends Activity {
+public class ClientCreateActivity extends Activity {
 
     EditText etClientName;
     EditText etClientLocation;
@@ -38,11 +37,10 @@ public class CreateClientActivity extends Activity {
         etClientContactPhone = (EditText) findViewById(R.id.etClientContactPhone);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.create_client, menu);
+        getMenuInflater().inflate(R.menu.client_create, menu);
         return true;
     }
 

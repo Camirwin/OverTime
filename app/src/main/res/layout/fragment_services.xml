@@ -13,23 +13,29 @@
         android:text="ON THE CLOCK"
         android:textStyle="bold" />
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Service Name"
+        android:textStyle="bold"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:textSize="25sp"/>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginBottom="5dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Service Name"
-                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,6 +50,13 @@
                 android:textColor="#ff828282"
                 android:textSize="12sp"
                 android:text="$25.00/hour"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff828282"
+                android:textSize="12sp"
+                android:text=""/>
 
             </LinearLayout>
 
@@ -60,12 +73,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:textColor="#ff07af08"
+                android:textSize="16sp"
                 android:text="$170.00"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:textSize="16sp"
                 android:text="6h 48m 00s"/>
 
         </LinearLayout>

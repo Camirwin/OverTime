@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class ClientsActivity extends ListActivity {
 
     public static final String CLIENT_ID = "client_id";
+    public static final String CLIENT_NAME = "client_name";
 
     InvoiceTrackerDataSource dataSource;
     ArrayList<Client> clients;
@@ -29,10 +30,6 @@ public class ClientsActivity extends ListActivity {
         setContentView(R.layout.activity_clients);
 
         dataSource = new InvoiceTrackerDataSource(this);
-        clients = dataSource.getAllClients();
-
-        ClientAdapter adapter = new ClientAdapter(this, clients);
-        setListAdapter(adapter);
     }
 
 
@@ -53,7 +50,7 @@ public class ClientsActivity extends ListActivity {
             return true;
         }
         else if (id == R.id.action_add_client) {
-            Intent intent = new Intent(this, CreateClientActivity.class);
+            Intent intent = new Intent(this, ClientCreateActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -63,6 +60,7 @@ public class ClientsActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(this, ClientActivity.class);
         intent.putExtra(CLIENT_ID, clients.get(position).getId());
+        intent.putExtra(CLIENT_NAME, clients.get(position).getName());
         startActivity(intent);
     }
 
@@ -75,8 +73,8 @@ public class ClientsActivity extends ListActivity {
     @Override
     public void onResume() {
         super.onResume();
-        dataSource.open();
 
+        dataSource.open();
         clients = dataSource.getAllClients();
 
         ClientAdapter adapter = new ClientAdapter(this, clients);

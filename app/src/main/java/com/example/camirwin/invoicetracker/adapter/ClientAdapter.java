@@ -18,7 +18,7 @@ import java.util.Locale;
 public class ClientAdapter extends ArrayAdapter<Client> {
 
     private final Context context;
-    private final ArrayList<Client> clients;
+    private ArrayList<Client> clients;
 
     public ClientAdapter(Context context, ArrayList<Client> clients) {
         super(context, R.layout.row_client, clients);
@@ -33,7 +33,7 @@ public class ClientAdapter extends ArrayAdapter<Client> {
 
         TextView tvClientName = (TextView) rowView.findViewById(R.id.tvClientName);
         TextView tvClientLastInvoice = (TextView) rowView.findViewById(R.id.tvClientLastInvoice);
-        TextView tvClientOustandingBalance = (TextView) rowView.findViewById(R.id.tvClientOutstandingBalance);
+        TextView tvClientOutstandingBalance = (TextView) rowView.findViewById(R.id.tvClientOutstandingBalance);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM yyyy, h:mm a", Locale.US);
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
@@ -41,17 +41,12 @@ public class ClientAdapter extends ArrayAdapter<Client> {
         Client client = clients.get(position);
 
         tvClientName.setText(client.getName());
+        tvClientOutstandingBalance.setText("$" + decimalFormat.format(client.getOutstandingBalance()));
 
-        if (client.getLastInvoiceDate() == null) {
+        if (client.getLastInvoiceDate().equals(Long.valueOf(0))) {
             tvClientLastInvoice.setText("Never");
         } else {
             tvClientLastInvoice.setText(dateFormat.format(client.getLastInvoiceAsDateObject()));
-        }
-
-        if (client.getOutstandingBalance() == null) {
-            tvClientOustandingBalance.setText("$" + decimalFormat.format(0));
-        } else {
-            tvClientOustandingBalance.setText("$" + decimalFormat.format(client.getOutstandingBalance()));
         }
 
         return rowView;

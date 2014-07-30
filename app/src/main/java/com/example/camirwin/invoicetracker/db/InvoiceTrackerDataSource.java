@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.camirwin.invoicetracker.model.Client;
+import com.example.camirwin.invoicetracker.model.Services;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,16 @@ public class InvoiceTrackerDataSource {
             InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_PHONE,
             InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_BALANCE,
             InvoiceTrackerDBOpenHelper.CLIENTS_LAST_INVOICE_DATE
+    };
+
+    private static final String[] allServiceColumns = {
+            InvoiceTrackerDBOpenHelper.SERVICES_ID,
+            InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID,
+            InvoiceTrackerDBOpenHelper.SERVICES_INVOICE_ID,
+            InvoiceTrackerDBOpenHelper.SERVICES_NAME,
+            InvoiceTrackerDBOpenHelper.SERVICES_RATE,
+            InvoiceTrackerDBOpenHelper.SERVICES_LAST_WORKED_DATE,
+            InvoiceTrackerDBOpenHelper.SERVICES_OUTSTANDING_BALANCE
     };
 
     SQLiteOpenHelper dbHelper;
@@ -153,6 +164,69 @@ public class InvoiceTrackerDataSource {
 
         // Return the retrieved client or null if none was found.
         return client;
+    }
+
+    public Services createService(Services service) {
+        // Variable to hold map of values to columns
+        ContentValues values = new ContentValues();
+
+        // Put supplied values into variable
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID, service.getClientId());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_INVOICE_ID, service.getInvoiceId());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_NAME, service.getName());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_RATE, service.getRate());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_LAST_WORKED_DATE, service.getLastWorkedDate());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_OUTSTANDING_BALANCE, service.getOutstandingBalance());
+
+        // Insert new entry and return the generated id
+        int insertId;
+        try {
+            insertId = (int) database.insert(InvoiceTrackerDBOpenHelper.TABLE_SERVICES, null, values);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Log.i(LOGTAG, "Created service " + insertId);
+
+        // Set id in service object to created id and return
+        service.setId(insertId);
+        return service;
+    }
+
+    public ArrayList<Services> getAllServicesForClient(int clientId) {
+        // Variable to hold services
+        ArrayList<Services> services = new ArrayList<Services>();
+
+        // Cursor holding query to database for all services for client
+        Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_SERVICES,
+                allServiceColumns,
+                InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID + " = ?",
+                new String[] { String.valueOf(clientId) }, null, null, null);
+
+        if (cursor.getCount() > 0) {
+            // Loop through values retrieved by cursor
+            while (cursor.moveToNext()) {
+                // Create service object from cursor location
+                Services service = new Services();
+                service.setId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_ID)));
+                service.setClientId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID)));
+                service.setInvoiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_INVOICE_ID)));
+                service.setName(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_NAME)));
+                service.setRate(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_RATE)));
+                service.setLastWorkedDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_LAST_WORKED_DATE)));
+                service.setOutstandingBalance(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_OUTSTANDING_BALANCE)));
+
+                // Add client to list
+                services.add(service);
+            }
+        }
+        cursor.close();
+
+        Log.i(LOGTAG, "Retrieved " + services.size() + " services for client " + clientId);
+
+        // Return full list of services
+        return services;
     }
 
 }

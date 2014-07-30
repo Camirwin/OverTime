@@ -1,36 +1,38 @@
 package com.example.camirwin.invoicetracker.model;
 
+import java.util.Date;
+
 public class Services {
 
-    private int Id;
-    private int ClientId;
-    private int InvoiceId;
+    private Integer Id;
+    private Integer ClientId;
+    private Integer InvoiceId;
     private String Name;
-    private double Rate;
-    private long LastWorkedDate;
-    private double OutstandingBalance;
+    private Double Rate;
+    private Long LastWorkedDate;
+    private Double OutstandingBalance;
 
-    public int getId() {
+    public Integer getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         Id = id;
     }
 
-    public int getClientId() {
+    public Integer getClientId() {
         return ClientId;
     }
 
-    public void setClientId(int clientId) {
+    public void setClientId(Integer clientId) {
         ClientId = clientId;
     }
 
-    public int getInvoiceId() {
+    public Integer getInvoiceId() {
         return InvoiceId;
     }
 
-    public void setInvoiceId(int invoiceId) {
+    public void setInvoiceId(Integer invoiceId) {
         InvoiceId = invoiceId;
     }
 
@@ -42,28 +44,30 @@ public class Services {
         Name = name;
     }
 
-    public double getRate() {
+    public Double getRate() {
         return Rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(Double rate) {
         Rate = rate;
     }
 
-    public long getLastWorkedDate() {
+    public Long getLastWorkedDate() {
         return LastWorkedDate;
     }
 
-    public void setLastWorkedDate(long lastWorkedDate) {
+    public void setLastWorkedDate(Long lastWorkedDate) {
         LastWorkedDate = lastWorkedDate;
     }
 
-    public double getOutstandingBalance() {
+    public Double getOutstandingBalance() {
         return OutstandingBalance;
     }
 
-    public void setOutstandingBalance(double outstandingBalance) {
+    public void setOutstandingBalance(Double outstandingBalance) {
         OutstandingBalance = outstandingBalance;
     }
+
+    public Date getLastWorkedAsDateObject() { return new Date(getLastWorkedDate()); }
 
 }

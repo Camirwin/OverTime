@@ -40,7 +40,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_vertical"
         android:paddingRight="3dp"
         android:orientation="vertical">
 
@@ -48,6 +48,7 @@
             android:id="@+id/tvClientOutstandingBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:text="$2,500.00"
             android:textColor="#ff07af08"
             android:textSize="18sp" />
@@ -55,7 +56,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="right"
             android:text="outstanding"
             android:textColor="#ff828282"
             android:textSize="12sp" />

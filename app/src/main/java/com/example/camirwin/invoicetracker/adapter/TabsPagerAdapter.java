@@ -3,29 +3,30 @@ package com.example.camirwin.invoicetracker.adapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.example.camirwin.invoicetracker.fragment.DeliverablesFragment;
 import com.example.camirwin.invoicetracker.fragment.ExpensesFragment;
 import com.example.camirwin.invoicetracker.fragment.OverviewFragment;
 import com.example.camirwin.invoicetracker.fragment.ServicesFragment;
-import com.example.camirwin.invoicetracker.model.Client;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
-    Client client;
+    int clientId;
 
-    public TabsPagerAdapter(FragmentManager fm, Client client) {
+    public TabsPagerAdapter(FragmentManager fm, int clientId) {
         super(fm);
-        this.client = client;
+        this.clientId = clientId;
     }
 
     @Override
     public Fragment getItem(int position) {
+        Log.i("InvoiceTracker", "getItem called");
         switch (position) {
             case 0:
-                return new OverviewFragment(client);
+                return OverviewFragment.newInstance(clientId);
             case 1:
-                return new ServicesFragment();
+                return ServicesFragment.newInstance(clientId);
             case 2:
                 return new DeliverablesFragment();
             case 3:
@@ -33,6 +34,12 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         }
 
         return null;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        Log.i("InvoiceTracker", "getItemPosition called");
+        return super.getItemPosition(object);
     }
 
     @Override

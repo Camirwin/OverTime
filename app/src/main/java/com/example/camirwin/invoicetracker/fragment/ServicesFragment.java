@@ -2,16 +2,26 @@ package com.example.camirwin.invoicetracker.fragment;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.camirwin.invoicetracker.R;
+import com.example.camirwin.invoicetracker.activity.ServiceCreateActivity;
 import com.example.camirwin.invoicetracker.adapter.ServiceAdapter;
+import com.example.camirwin.invoicetracker.db.InvoiceTrackerDataSource;
+import com.example.camirwin.invoicetracker.model.Services;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,34 +33,23 @@ import com.example.camirwin.invoicetracker.adapter.ServiceAdapter;
  *
  */
 public class ServicesFragment extends ListFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public static final String CLIENT_ID = "clientId";
+
+    int clientId;
+    InvoiceTrackerDataSource dataSource;
+    ArrayList<Services> services;
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ServicesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ServicesFragment newInstance(String param1, String param2) {
+    public static ServicesFragment newInstance(int clientId) {
         ServicesFragment fragment = new ServicesFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(CLIENT_ID, clientId);
         fragment.setArguments(args);
         return fragment;
     }
+
     public ServicesFragment() {
         // Required empty public constructor
     }
@@ -58,21 +57,36 @@ public class ServicesFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            clientId = getArguments().getInt(CLIENT_ID);
         }
+
+        dataSource = new InvoiceTrackerDataSource(getActivity());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.services, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_service:
+                Intent intent = new Intent(getActivity(), ServiceCreateActivity.class);
+                intent.putExtra(CLIENT_ID, clientId);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.i("InvoiceTracker", "Service fragment create view");
         // Inflate the layout for this fragment
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_services, container, false);
-
-        String[] list = new String[] { "temp" };
-        ServiceAdapter adapter = new ServiceAdapter(getActivity(), list);
-        setListAdapter(adapter);
 
         return layout;
     }
@@ -99,6 +113,25 @@ public class ServicesFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onPause() {
+        Log.i("InvoiceTracker", "Service fragment paused");
+        super.onPause();
+        dataSource.close();
+    }
+
+    @Override
+    public void onResume() {
+        Log.i("InvoiceTracker", "Service fragment resumed");
+        super.onResume();
+
+        dataSource.open();
+        services = dataSource.getAllServicesForClient(clientId);
+
+        ServiceAdapter adapter = new ServiceAdapter(getActivity(), services);
+        setListAdapter(adapter);
     }
 
     /**

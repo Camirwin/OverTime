@@ -27,6 +27,6 @@ public class InvoiceAdapter extends ArrayAdapter<String> {
 
     @Override
     public int getCount() {
-        return 3;
+        return 0;
     }
 }

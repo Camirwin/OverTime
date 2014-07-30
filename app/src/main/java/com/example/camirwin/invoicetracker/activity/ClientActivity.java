@@ -27,7 +27,8 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
     ActionBar actionBar;
     private TabsPagerAdapter mAdapter;
     InvoiceTrackerDataSource dataSource;
-    Client client;
+    int clientId;
+    String clientName;
 
     String[] tabs = { "OVERVIEW", "SERVICES", "DELIVERABLES", "EXPENSES"};
 
@@ -41,15 +42,17 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
 
-        dataSource = new InvoiceTrackerDataSource(this);
-        client = dataSource.getClientById(getIntent().getIntExtra(ClientsActivity.CLIENT_ID, 0));
+        if (getIntent().getExtras() != null) {
+            clientId = getIntent().getIntExtra(ClientsActivity.CLIENT_ID, 0);
+            clientName = getIntent().getStringExtra(ClientsActivity.CLIENT_NAME);
+        }
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mAdapter = new TabsPagerAdapter(getFragmentManager(), client);
+        mAdapter = new TabsPagerAdapter(getFragmentManager(), clientId);
         mViewPager.setAdapter(mAdapter);
 
         actionBar = getActionBar();
-        actionBar.setTitle(client.getName());
+        actionBar.setTitle(clientName);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         for (String tab : tabs) {
@@ -118,4 +121,5 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }
