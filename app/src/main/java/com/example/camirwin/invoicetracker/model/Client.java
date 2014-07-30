@@ -11,7 +11,9 @@ public class Client {
     private String ContactLastName;
     private String ContactEmail;
     private String ContactPhone;
-    private Double OutstandingBalance;
+    private Double OutstandingServices;
+    private Double OutstandingDeliverables;
+    private Double OutstandingExpenses;
     private Long LastInvoiceDate;
 
     public Integer getId() {
@@ -70,12 +72,28 @@ public class Client {
         ContactPhone = contactPhone;
     }
 
-    public Double getOutstandingBalance() {
-        return OutstandingBalance;
+    public Double getOutstandingServices() {
+        return OutstandingServices;
     }
 
-    public void setOutstandingBalance(Double outstandingBalance) {
-        OutstandingBalance = outstandingBalance;
+    public void setOutstandingServices(Double outstandingServices) {
+        OutstandingServices = outstandingServices;
+    }
+
+    public Double getOutstandingDeliverables() {
+        return OutstandingDeliverables;
+    }
+
+    public void setOutstandingDeliverables(Double outstandingDeliverables) {
+        OutstandingDeliverables = outstandingDeliverables;
+    }
+
+    public Double getOutstandingExpenses() {
+        return OutstandingExpenses;
+    }
+
+    public void setOutstandingExpenses(Double outstandingExpenses) {
+        OutstandingExpenses = outstandingExpenses;
     }
 
     public Long getLastInvoiceDate() {
@@ -89,5 +107,7 @@ public class Client {
     public Date getLastInvoiceAsDateObject() {
         return new Date(getLastInvoiceDate());
     }
+
+    public Double getOutstandingBalance() { return OutstandingServices + OutstandingDeliverables + OutstandingExpenses; }
 
 }

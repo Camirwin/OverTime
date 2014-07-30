@@ -56,6 +56,7 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/tvClientOutstandingServices"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$0.00"
@@ -80,6 +81,7 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/tvClientOutstandingDeliverables"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$0.00"
@@ -105,6 +107,7 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/tvClientOutstandingExpenses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$0.00"

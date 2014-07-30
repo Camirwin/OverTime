@@ -36,7 +36,12 @@ public class OverviewFragment extends ListFragment {
     private static final String CLIENT_ID = "clientId";
 
     int clientId;
+    Client client;
     InvoiceTrackerDataSource dataSource;
+    TextView tvOutstandingBalance;
+    TextView tvOutstandingServices;
+    TextView tvOutstandingDeliverables;
+    TextView tvOutstandingExpenses;
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,6 +89,11 @@ public class OverviewFragment extends ListFragment {
         // Inflate the layout for this fragment
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_overview, container, false);
 
+        tvOutstandingBalance = (TextView) layout.findViewById(R.id.tvClientOutstandingBalance);
+        tvOutstandingServices = (TextView) layout.findViewById(R.id.tvClientOutstandingServices);
+        tvOutstandingDeliverables = (TextView) layout.findViewById(R.id.tvClientOutstandingDeliverables);
+        tvOutstandingExpenses = (TextView) layout.findViewById(R.id.tvClientOutstandingExpenses);
+
         String[] list = new String[] { "temp" };
         InvoiceAdapter adapter = new InvoiceAdapter(getActivity(), list);
         setListAdapter(adapter);
@@ -129,6 +139,18 @@ public class OverviewFragment extends ListFragment {
 
         super.onResume();
         dataSource.open();
+
+        updateUI();
+    }
+
+    public void updateUI() {
+        client = dataSource.getClientById(clientId);
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+
+        tvOutstandingBalance.setText("$" + decimalFormat.format(client.getOutstandingBalance()));
+        tvOutstandingServices.setText("$" + decimalFormat.format(client.getOutstandingServices()));
+        tvOutstandingDeliverables.setText("$" + decimalFormat.format(client.getOutstandingDeliverables()));
+        tvOutstandingExpenses.setText("$" + decimalFormat.format(client.getOutstandingExpenses()));
     }
 
     /**

@@ -1,96 +1,110 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.camirwin.invoicetracker.fragment.ServicesFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffb4b4b4"
-        android:padding="5dp"
-        android:text="ON THE CLOCK"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Service Name"
-        android:textStyle="bold"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingRight="5dp"
-        android:textSize="25sp"/>
-
     <LinearLayout
+        android:id="@+id/llClockedInServiceLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:layout_marginBottom="5dp">
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffb4b4b4"
+            android:padding="5dp"
+            android:text="ON THE CLOCK"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvServiceName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:text="Service Name"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="#ff828282"
-                android:textSize="12sp"
-                android:text="since 28 Jul 2014, 12:00 PM"/>
+                android:layout_weight="2"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#ff828282"
-                android:textSize="12sp"
-                android:text="$25.00/hour"/>
+                <TextView
+                    android:id="@+id/tvTimeEntryClockIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="since 28 Jul 2014, 12:00 PM"
+                    android:textColor="#ff828282"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#ff828282"
-                android:textSize="12sp"
-                android:text=""/>
+                <TextView
+                    android:id="@+id/tvTimeEntryRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$25.00/hour"
+                    android:textColor="#ff828282"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="#ff828282"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="right"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#ff07af08"
-                android:textSize="16sp"
-                android:text="$170.00"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tvTimeEntryEarnedIncome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="$170.00"
+                    android:textColor="#ff07af08"
+                    android:textSize="16sp" />
+
+                <Chronometer
+                    android:id="@+id/chronTimeEntryTimeElapsed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="6h 48m 00s"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnClockOut"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:textSize="16sp"
-                android:text="6h 48m 00s"/>
+                android:layout_weight="1"
+                android:text="Clock Out"
+                android:textSize="14sp" />
 
         </LinearLayout>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Clock Out"
-            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -114,8 +128,8 @@
         android:gravity="center"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:textColor="#50000000"
         android:text="You have not created any services for this client. Select the add button at the top of the screen to create one."
+        android:textColor="#50000000"
         android:textSize="20sp" />
 
 </LinearLayout>

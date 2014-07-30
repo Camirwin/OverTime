@@ -22,7 +22,7 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
         DeliverablesFragment.OnFragmentInteractionListener,
         OverviewFragment.OnFragmentInteractionListener,
         ExpensesFragment.OnFragmentInteractionListener,
-        ServicesFragment.OnFragmentInteractionListener {
+        ServicesFragment.OnServiceInteractionListener {
 
     ActionBar actionBar;
     private TabsPagerAdapter mAdapter;
@@ -50,6 +50,7 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new TabsPagerAdapter(getFragmentManager(), clientId);
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(3);
 
         actionBar = getActionBar();
         actionBar.setTitle(clientName);
@@ -122,4 +123,9 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
 
     }
 
+    @Override
+    public void onChangeInServices() {
+        OverviewFragment overviewFragment = (OverviewFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+        overviewFragment.updateUI();
+    }
 }

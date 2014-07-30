@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.camirwin.invoicetracker.model.Client;
 import com.example.camirwin.invoicetracker.model.Services;
+import com.example.camirwin.invoicetracker.model.TimeEntry;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,9 @@ public class InvoiceTrackerDataSource {
             InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_LAST_NAME,
             InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_EMAIL,
             InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_PHONE,
-            InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_BALANCE,
+            InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_SERVICES,
+            InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_DELIVERABLES,
+            InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_EXPENSES,
             InvoiceTrackerDBOpenHelper.CLIENTS_LAST_INVOICE_DATE
     };
 
@@ -36,6 +39,16 @@ public class InvoiceTrackerDataSource {
             InvoiceTrackerDBOpenHelper.SERVICES_RATE,
             InvoiceTrackerDBOpenHelper.SERVICES_LAST_WORKED_DATE,
             InvoiceTrackerDBOpenHelper.SERVICES_OUTSTANDING_BALANCE
+    };
+
+    private static final String[] allTimeEntryColumns = {
+            InvoiceTrackerDBOpenHelper.TIME_ENTRIES_ID,
+            InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID,
+            InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID,
+            InvoiceTrackerDBOpenHelper.TIME_ENTRIES_INVOICE_ID,
+            InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_IN_DATE,
+            InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE,
+            InvoiceTrackerDBOpenHelper.TIME_ENTRIES_RATE
     };
 
     SQLiteOpenHelper dbHelper;
@@ -81,6 +94,10 @@ public class InvoiceTrackerDataSource {
         values.put(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_LAST_NAME, client.getContactLastName());
         values.put(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_EMAIL, client.getContactEmail());
         values.put(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_PHONE, client.getContactPhone());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_SERVICES, client.getOutstandingServices());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_DELIVERABLES, client.getOutstandingDeliverables());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_EXPENSES, client.getOutstandingExpenses());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_LAST_INVOICE_DATE, client.getLastInvoiceDate());
 
         // Insert new entry and return the generated id
         int insertId;
@@ -118,7 +135,9 @@ public class InvoiceTrackerDataSource {
                 client.setContactLastName(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_LAST_NAME)));
                 client.setContactEmail(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_EMAIL)));
                 client.setContactPhone(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_PHONE)));
-                client.setOutstandingBalance(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_BALANCE)));
+                client.setOutstandingServices(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_SERVICES)));
+                client.setOutstandingDeliverables(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_DELIVERABLES)));
+                client.setOutstandingExpenses(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_EXPENSES)));
                 client.setLastInvoiceDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_LAST_INVOICE_DATE)));
 
                 // Add client to list
@@ -153,7 +172,9 @@ public class InvoiceTrackerDataSource {
             client.setContactLastName(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_LAST_NAME)));
             client.setContactEmail(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_EMAIL)));
             client.setContactPhone(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_PHONE)));
-            client.setOutstandingBalance(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_BALANCE)));
+            client.setOutstandingServices(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_SERVICES)));
+            client.setOutstandingDeliverables(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_DELIVERABLES)));
+            client.setOutstandingExpenses(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_EXPENSES)));
             client.setLastInvoiceDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.CLIENTS_LAST_INVOICE_DATE)));
 
             Log.i(LOGTAG, "Retrieved client " + clientId);
@@ -163,6 +184,35 @@ public class InvoiceTrackerDataSource {
         cursor.close();
 
         // Return the retrieved client or null if none was found.
+        return client;
+    }
+
+    public Client updateClient(Client client) {
+        // Variable to hold map of values to columns
+        ContentValues values = new ContentValues();
+
+        // Put supplied values into variable
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_NAME, client.getName());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_LOCATION, client.getLocation());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_FIRST_NAME, client.getContactFirstName());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_LAST_NAME, client.getContactLastName());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_EMAIL, client.getContactEmail());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_CONTACT_PHONE, client.getContactPhone());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_SERVICES, client.getOutstandingServices());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_DELIVERABLES, client.getOutstandingDeliverables());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_OUTSTANDING_EXPENSES, client.getOutstandingExpenses());
+        values.put(InvoiceTrackerDBOpenHelper.CLIENTS_LAST_INVOICE_DATE, client.getLastInvoiceDate());
+
+        try {
+            database.update(InvoiceTrackerDBOpenHelper.TABLE_CLIENTS, values,
+                    InvoiceTrackerDBOpenHelper.CLIENTS_ID + " = ?",
+                    new String[] { String.valueOf(client.getId() )});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Log.i(LOGTAG, "Updated client " + client.getId());
         return client;
     }
 
@@ -227,6 +277,156 @@ public class InvoiceTrackerDataSource {
 
         // Return full list of services
         return services;
+    }
+
+   public Services getServiceById(int serviceId) {
+       // Variable to hold service
+       Services service = null;
+
+       // Cursor holding query to database for all services for client
+       Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_SERVICES,
+               allServiceColumns,
+               InvoiceTrackerDBOpenHelper.SERVICES_ID + " = ?",
+               new String[] { String.valueOf(serviceId) }, null, null, null);
+
+       if (cursor.getCount() > 0) {
+           cursor.moveToFirst();
+           // Create service object from cursor location
+           service = new Services();
+           service.setId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_ID)));
+           service.setClientId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID)));
+           service.setInvoiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_INVOICE_ID)));
+           service.setName(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_NAME)));
+           service.setRate(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_RATE)));
+           service.setLastWorkedDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_LAST_WORKED_DATE)));
+           service.setOutstandingBalance(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_OUTSTANDING_BALANCE)));
+
+           Log.i(LOGTAG, "Retrieved service " + serviceId);
+       } else {
+           Log.i(LOGTAG, "No service " + serviceId + " found");
+       }
+       cursor.close();
+
+       // Return service
+       return service;
+   }
+
+    public Services updateService(Services service) {
+        // Variable to hold map of values to columns
+        ContentValues values = new ContentValues();
+
+        // Put supplied values into variable
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID, service.getClientId());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_INVOICE_ID, service.getInvoiceId() == 0 ? null : service.getInvoiceId());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_NAME, service.getName());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_RATE, service.getRate());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_LAST_WORKED_DATE, service.getLastWorkedDate());
+        values.put(InvoiceTrackerDBOpenHelper.SERVICES_OUTSTANDING_BALANCE, service.getOutstandingBalance());
+
+        try {
+            database.update(InvoiceTrackerDBOpenHelper.TABLE_SERVICES, values,
+                    InvoiceTrackerDBOpenHelper.SERVICES_ID + " = ?",
+                    new String[] { String.valueOf(service.getId() )});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Log.i(LOGTAG, "Updated service " + service.getId());
+        return service;
+    }
+
+    public TimeEntry createTimeEntry(TimeEntry timeEntry) {
+        // Variable to hold map of values to columns
+        ContentValues values = new ContentValues();
+
+        // Put supplied values into variable
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID, timeEntry.getClientId());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID, timeEntry.getServiceId());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_INVOICE_ID, timeEntry.getInvoiceId());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_IN_DATE, timeEntry.getClockInDate());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE, timeEntry.getClockOutDate());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_RATE, timeEntry.getRate());
+
+        // Insert new entry and return the generated id
+        int insertId;
+        try {
+            insertId = (int) database.insert(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES, null, values);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Log.i(LOGTAG, "Created time entry " + insertId);
+
+        // Set id in time entry object to created id and return
+        timeEntry.setId(insertId);
+        return timeEntry;
+    }
+
+    public TimeEntry getClockedInEntryForClient(int clientId) {
+        // Cursor holding query to database for a time entry that is clocked in for the client
+        Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES,
+                allTimeEntryColumns,
+                InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID + " = ? "
+                + "AND " + InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE + " IS NULL",
+                new String[] { String.valueOf(clientId) }, null, null, null);
+
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            TimeEntry timeEntry = new TimeEntry();
+            timeEntry.setId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_ID)));
+            timeEntry.setClientId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID)));
+            timeEntry.setServiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID)));
+            timeEntry.setInvoiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_INVOICE_ID)));
+            timeEntry.setClockInDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_IN_DATE)));
+            timeEntry.setClockOutDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE)));
+            timeEntry.setRate(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_RATE)));
+
+            cursor.close();
+            Log.i(LOGTAG, "Retrieved clock in time entry " + timeEntry.getId() + " for client " + clientId);
+            return timeEntry;
+        }
+
+        cursor.close();
+        Log.i(LOGTAG, "No clocked in time entry for client " + clientId);
+        return null;
+    }
+
+    public TimeEntry updateTimeEntry(TimeEntry timeEntry) {
+        // Variable to hold map of values to columns
+        ContentValues values = new ContentValues();
+
+        // Put supplied values into variable
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID, timeEntry.getClientId());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID, timeEntry.getServiceId());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_INVOICE_ID, timeEntry.getInvoiceId() == 0 ? null : timeEntry.getInvoiceId());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_IN_DATE, timeEntry.getClockInDate());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE, timeEntry.getClockOutDate());
+        values.put(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_RATE, timeEntry.getRate());
+
+        try {
+            database.update(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES, values,
+                    InvoiceTrackerDBOpenHelper.TIME_ENTRIES_ID + " = ?",
+                    new String[] { String.valueOf(timeEntry.getId() )});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Log.i(LOGTAG, "Updated time entry " + timeEntry.getId());
+
+        Services service = getServiceById(timeEntry.getServiceId());
+        service.setOutstandingBalance(service.getOutstandingBalance() + timeEntry.getEarnedIncome());
+        service.setLastWorkedDate(timeEntry.getClockOutDate());
+        updateService(service);
+
+        Client client = getClientById(timeEntry.getClientId());
+        client.setOutstandingServices(client.getOutstandingServices() + timeEntry.getEarnedIncome());
+        updateClient(client);
+
+        return timeEntry;
     }
 
 }

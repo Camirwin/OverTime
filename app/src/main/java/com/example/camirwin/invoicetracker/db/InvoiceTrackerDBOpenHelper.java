@@ -19,7 +19,9 @@ public class InvoiceTrackerDBOpenHelper extends SQLiteOpenHelper {
     public static final String CLIENTS_CONTACT_LAST_NAME = "contact_last_name";
     public static final String CLIENTS_CONTACT_EMAIL = "contact_email";
     public static final String CLIENTS_CONTACT_PHONE = "contact_phone";
-    public static final String CLIENTS_OUTSTANDING_BALANCE = "outstanding_balance";
+    public static final String CLIENTS_OUTSTANDING_SERVICES = "outstanding_services";
+    public static final String CLIENTS_OUTSTANDING_DELIVERABLES = "outstanding_deliverables";
+    public static final String CLIENTS_OUTSTANDING_EXPENSES = "outstanding_expenses";
     public static final String CLIENTS_LAST_INVOICE_DATE = "last_invoice_date";
 
     // Clients table create statement
@@ -31,7 +33,9 @@ public class InvoiceTrackerDBOpenHelper extends SQLiteOpenHelper {
             + CLIENTS_CONTACT_LAST_NAME + " TEXT, "
             + CLIENTS_CONTACT_EMAIL + " TEXT, "
             + CLIENTS_CONTACT_PHONE + " TEXT, "
-            + CLIENTS_OUTSTANDING_BALANCE + " REAL, "
+            + CLIENTS_OUTSTANDING_SERVICES + " REAL, "
+            + CLIENTS_OUTSTANDING_DELIVERABLES + " REAL, "
+            + CLIENTS_OUTSTANDING_EXPENSES + " REAL, "
             + CLIENTS_LAST_INVOICE_DATE + " INTEGER" + ")";
 
     // Invoices table constants
@@ -73,6 +77,29 @@ public class InvoiceTrackerDBOpenHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY(" + SERVICES_CLIENT_ID + ") REFERENCES " + TABLE_CLIENTS + "(_id) ON DELETE CASCADE, "
             + "FOREIGN KEY(" + SERVICES_INVOICE_ID + ") REFERENCES " + TABLE_INVOICES + "(_id)" + ")";
 
+    // TimeEntries table constants
+    public static final String TABLE_TIME_ENTRIES = "time_entries";
+    public static final String TIME_ENTRIES_ID = "_id";
+    public static final String TIME_ENTRIES_CLIENT_ID = "client_id";
+    public static final String TIME_ENTRIES_SERVICE_ID = "service_id";
+    public static final String TIME_ENTRIES_INVOICE_ID = "invoice_id";
+    public static final String TIME_ENTRIES_CLOCK_IN_DATE = "clock_in_date";
+    public static final String TIME_ENTRIES_CLOCK_OUT_DATE = "clock_out_date";
+    public static final String TIME_ENTRIES_RATE = "rate";
+
+    // TimeEntries table create statement
+    private static final String TABLE_TIME_ENTRIES_CREATE = "CREATE TABLE " + TABLE_TIME_ENTRIES + " ("
+            + TIME_ENTRIES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + TIME_ENTRIES_CLIENT_ID + " INTEGER NOT NULL, "
+            + TIME_ENTRIES_SERVICE_ID + " INTEGER NOT NULL, "
+            + TIME_ENTRIES_INVOICE_ID + " INTEGER, "
+            + TIME_ENTRIES_CLOCK_IN_DATE + " INTEGER NOT NULL, "
+            + TIME_ENTRIES_CLOCK_OUT_DATE + " INTEGER, "
+            + TIME_ENTRIES_RATE + " REAL, "
+            + "FOREIGN KEY(" + TIME_ENTRIES_CLIENT_ID + ") REFERENCES " + TABLE_CLIENTS + "(_id) ON DELETE CASCADE, "
+            + "FOREIGN KEY(" + TIME_ENTRIES_SERVICE_ID + ") REFERENCES " + TABLE_SERVICES + "(_id) ON DELETE CASCADE, "
+            + "FOREIGN KEY(" + TIME_ENTRIES_INVOICE_ID + ") REFERENCES " + TABLE_INVOICES + "(_id)" + ")";
+
     public InvoiceTrackerDBOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -82,6 +109,7 @@ public class InvoiceTrackerDBOpenHelper extends SQLiteOpenHelper {
         database.execSQL(TABLE_CLIENTS_CREATE);
         database.execSQL(TABLE_INVOICES_CREATE);
         database.execSQL(TABLE_SERVICES_CREATE);
+        database.execSQL(TABLE_TIME_ENTRIES_CREATE);
     }
 
     @Override
@@ -89,6 +117,7 @@ public class InvoiceTrackerDBOpenHelper extends SQLiteOpenHelper {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_CLIENTS);
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_INVOICES);
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_SERVICES);
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_TIME_ENTRIES);
 
         onCreate(database);
     }

@@ -37,12 +37,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public int getItemPosition(Object object) {
-        Log.i("InvoiceTracker", "getItemPosition called");
-        return super.getItemPosition(object);
-    }
-
-    @Override
     public int getCount() {
         return 4;
     }
