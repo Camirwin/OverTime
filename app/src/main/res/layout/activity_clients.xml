@@ -9,14 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView android:id="@android:id/empty"
+    <TextView
+        android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:gravity="center"
+        android:text="You currently do not have any clients. Select the add button at the top of the screen to create one."
         android:textColor="#50000000"
-        android:textSize="20sp"
-        android:text="You currently do not have any clients. Select the add button at the top of the screen to create one." />
+        android:textSize="20sp" />
 
 </RelativeLayout>

@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.camirwin.invoicetracker.R;
+import com.example.camirwin.invoicetracker.activity.ServiceActivity;
 import com.example.camirwin.invoicetracker.activity.ServiceCreateActivity;
 import com.example.camirwin.invoicetracker.adapter.ServiceAdapter;
 import com.example.camirwin.invoicetracker.db.InvoiceTrackerDataSource;
@@ -45,6 +46,7 @@ import java.util.Locale;
 public class ServicesFragment extends ListFragment {
 
     public static final String CLIENT_ID = "clientId";
+    public static final String SERVICE_ID = "serviceId";
 
     int clientId;
     InvoiceTrackerDataSource dataSource;
@@ -52,6 +54,7 @@ public class ServicesFragment extends ListFragment {
     TimeEntry clockedInTimeEntry;
     Services clockedInService;
     LinearLayout llClockedInServiceLayout;
+    TextView tvClockedInServiceHeader;
     Button btnClockOut;
     TextView tvServiceName;
     TextView tvTimeEntryClockIn;
@@ -90,6 +93,12 @@ public class ServicesFragment extends ListFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    public void onClockedInServiceClick() {
+        Intent intent = new Intent(getActivity(), ServiceActivity.class);
+        intent.putExtra(SERVICE_ID, clockedInService.getId());
+        startActivity(intent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -103,33 +112,9 @@ public class ServicesFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final Services service = services.get(position);
-
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Clock In")
-                .setMessage("Would you like to clock in to the service \"" + service.getName() + "\"?")
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        })
-                .setPositiveButton("Clock In",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                TimeEntry timeEntry = new TimeEntry();
-                                timeEntry.setClientId(clientId);
-                                timeEntry.setServiceId(service.getId());
-                                timeEntry.setClockInDate(System.currentTimeMillis());
-                                timeEntry.setRate(service.getRate());
-
-                                dataSource.createTimeEntry(timeEntry);
-
-                                updateUI();
-                                dialog.cancel();
-                            }
-                        }
-                ).create().show();
+        Intent intent = new Intent(getActivity(), ServiceActivity.class);
+        intent.putExtra(SERVICE_ID, services.get(position).getId());
+        startActivity(intent);
     }
 
     @Override
@@ -142,6 +127,7 @@ public class ServicesFragment extends ListFragment {
         tvTimeEntryEarnedIncome = (TextView) layout.findViewById(R.id.tvTimeEntryEarnedIncome);
         chronTimeEntryTimeElapsed = (Chronometer) layout.findViewById(R.id.chronTimeEntryTimeElapsed);
 
+        tvClockedInServiceHeader = (TextView) layout.findViewById(R.id.tvClockedInServiceHeader);
         llClockedInServiceLayout = (LinearLayout) layout.findViewById(R.id.llClockedInServiceLayout);
         btnClockOut = (Button) layout.findViewById(R.id.btnClockOut);
         btnClockOut.setOnClickListener(new View.OnClickListener() {
@@ -206,9 +192,6 @@ public class ServicesFragment extends ListFragment {
         Log.i("InvoiceTracker", "Service fragment resumed");
         super.onResume();
         dataSource.open();
-
-
-
         updateUI();
     }
 
@@ -233,13 +216,22 @@ public class ServicesFragment extends ListFragment {
             }
         }
 
+        llClockedInServiceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClockedInServiceClick();
+            }
+        });
+
         if (clockedInTimeEntry == null) {
+            tvClockedInServiceHeader.setVisibility(View.GONE);
             llClockedInServiceLayout.setVisibility(View.GONE);
             chronTimeEntryTimeElapsed.stop();
         } else {
             SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM yyyy, h:mm a", Locale.US);
             final DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 
+            tvClockedInServiceHeader.setVisibility(View.VISIBLE);
             llClockedInServiceLayout.setVisibility(View.VISIBLE);
             tvServiceName.setText(clockedInService.getName());
             tvTimeEntryClockIn.setText("since " + dateFormat.format(clockedInTimeEntry.getClockInAsDateObject()));
@@ -253,7 +245,7 @@ public class ServicesFragment extends ListFragment {
                     int m = (int) (time - h * 3600000) / 60000;
                     int s = (int) (time - h * 3600000 - m * 60000) / 1000;
                     String hString = h == 0 ? "" : h + "h ";
-                    String mString = m == 0 ? "" : m + "m ";
+                    String mString = m == 0 && h == 0 ? "" : m + "m ";
                     String sString = s + "s";
                     String timeElapsed = hString + mString + sString;
                     cArg.setText(timeElapsed);

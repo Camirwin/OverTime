@@ -12,6 +12,8 @@ import com.example.camirwin.invoicetracker.model.Services;
 import com.example.camirwin.invoicetracker.model.TimeEntry;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class InvoiceTrackerDataSource {
 
@@ -394,6 +396,36 @@ public class InvoiceTrackerDataSource {
         return null;
     }
 
+    public TimeEntry getClockedInEntryForService(int serviceId) {
+        // Cursor holding query to database for a time entry that is clocked in for the service
+        Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES,
+                allTimeEntryColumns,
+                InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID + " = ? "
+                        + "AND " + InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE + " IS NULL",
+                new String[] { String.valueOf(serviceId) }, null, null, null);
+
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            TimeEntry timeEntry = new TimeEntry();
+            timeEntry.setId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_ID)));
+            timeEntry.setClientId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID)));
+            timeEntry.setServiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID)));
+            timeEntry.setInvoiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_INVOICE_ID)));
+            timeEntry.setClockInDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_IN_DATE)));
+            timeEntry.setClockOutDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE)));
+            timeEntry.setRate(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_RATE)));
+
+            cursor.close();
+            Log.i(LOGTAG, "Retrieved clock in time entry " + timeEntry.getId() + " for service " + serviceId);
+            return timeEntry;
+        }
+
+        cursor.close();
+        Log.i(LOGTAG, "No clocked in time entry for service " + serviceId);
+        return null;
+    }
+
     public TimeEntry updateTimeEntry(TimeEntry timeEntry) {
         // Variable to hold map of values to columns
         ContentValues values = new ContentValues();
@@ -427,6 +459,49 @@ public class InvoiceTrackerDataSource {
         updateClient(client);
 
         return timeEntry;
+    }
+
+    public ArrayList<TimeEntry> getAllClockedOutTimeEntriesForService(int serviceId) {
+        // Variable to hold time entries
+        ArrayList<TimeEntry> timeEntries = new ArrayList<TimeEntry>();
+
+        // Cursor holding query to database for all clocked out time entries for the service
+        Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES,
+                allTimeEntryColumns,
+                InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID + " = ? "
+                + "AND " + InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE + " NOT NULL",
+                new String[] { String.valueOf(serviceId) }, null, null, null);
+
+        if (cursor.getCount() > 0) {
+            // Loop through values retrieved by cursor
+            while (cursor.moveToNext()) {
+                // Create time entry object from cursor location
+                TimeEntry timeEntry = new TimeEntry();
+                timeEntry.setId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_ID)));
+                timeEntry.setClientId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID)));
+                timeEntry.setServiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID)));
+                timeEntry.setInvoiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_INVOICE_ID)));
+                timeEntry.setClockInDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_IN_DATE)));
+                timeEntry.setClockOutDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE)));
+                timeEntry.setRate(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_RATE)));
+
+                // Add client to list
+                timeEntries.add(timeEntry);
+            }
+        }
+        cursor.close();
+
+        Log.i(LOGTAG, "Retrieved " + timeEntries.size() + " time stamps for service " + serviceId);
+
+        // Sort and return full list of time entries
+        Collections.sort(timeEntries, new Comparator<TimeEntry>() {
+            @Override
+            public int compare(TimeEntry timeEntry, TimeEntry timeEntry2) {
+                return timeEntry2.getClockOutDate().compareTo(timeEntry.getClockOutDate());
+            }
+        });
+
+        return timeEntries;
     }
 
 }

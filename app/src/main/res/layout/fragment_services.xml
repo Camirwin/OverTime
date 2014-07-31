@@ -5,19 +5,21 @@
     android:orientation="vertical"
     tools:context="com.example.camirwin.invoicetracker.fragment.ServicesFragment">
 
+    <TextView
+        android:id="@+id/tvClockedInServiceHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffb4b4b4"
+        android:padding="5dp"
+        android:text="ON THE CLOCK"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:id="@+id/llClockedInServiceLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffb4b4b4"
-            android:padding="5dp"
-            android:text="ON THE CLOCK"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvServiceName"

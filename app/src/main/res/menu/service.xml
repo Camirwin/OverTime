@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.camirwin.invoicetracker.activity.ServiceActivity" >
+    <item android:id="@+id/action_clock_in_or_out"
+        android:title="Clock In/Out"
+        android:icon="@drawable/ic_action_alarms"
+        android:showAsAction="always" />
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:showAsAction="never" />
+</menu>
