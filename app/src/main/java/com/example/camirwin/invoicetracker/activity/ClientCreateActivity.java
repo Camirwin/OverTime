@@ -52,8 +52,7 @@ public class ClientCreateActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        }
-        else if (id == R.id.action_create_client) {
+        } else if (id == R.id.action_create_client) {
             if (!etClientName.getText().toString().isEmpty()) {
                 Client client = new Client();
                 client.setName(etClientName.getText().toString());
@@ -69,8 +68,7 @@ public class ClientCreateActivity extends Activity {
             } else {
                 etClientName.setError("Client name required");
             }
-        }
-        else if (id == R.id.action_cancel) {
+        } else if (id == R.id.action_cancel) {
             NavUtils.navigateUpFromSameTask(this);
         }
         return super.onOptionsItemSelected(item);

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_add_invoice"
+    <item
+        android:id="@+id/action_add_invoice"
         android:icon="@drawable/ic_action_new"
-        android:title="Add Invoice"
-        android:showAsAction="always" />
+        android:showAsAction="always"
+        android:title="Add Invoice" />
 </menu>

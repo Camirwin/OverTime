@@ -68,6 +68,8 @@ public class Services {
         OutstandingBalance = outstandingBalance;
     }
 
-    public Date getLastWorkedAsDateObject() { return new Date(getLastWorkedDate()); }
+    public Date getLastWorkedAsDateObject() {
+        return new Date(getLastWorkedDate());
+    }
 
 }

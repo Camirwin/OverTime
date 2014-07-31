@@ -1,10 +1,13 @@
 package com.example.camirwin.invoicetracker.activity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Chronometer;
@@ -126,8 +129,7 @@ public class ServiceActivity extends ListActivity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        }
-        else if (id == R.id.action_clock_in_or_out) {
+        } else if (id == R.id.action_clock_in_or_out) {
             if (clockedInTimeEntry != null && clockedInTimeEntry.getServiceId() == serviceId) {
                 new AlertDialog.Builder(this)
                         .setTitle("Clock Out")
@@ -137,7 +139,8 @@ public class ServiceActivity extends ListActivity {
                                     public void onClick(DialogInterface dialog, int id) {
                                         dialog.cancel();
                                     }
-                                })
+                                }
+                        )
                         .setPositiveButton("Clock Out",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
@@ -157,7 +160,8 @@ public class ServiceActivity extends ListActivity {
                                     public void onClick(DialogInterface dialog, int id) {
                                         dialog.cancel();
                                     }
-                                })
+                                }
+                        )
                         .setPositiveButton("Clock In",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
@@ -174,6 +178,31 @@ public class ServiceActivity extends ListActivity {
                                 }
                         ).create().show();
             }
+        } else if (id == R.id.action_delete_service) {
+            final Context context = this;
+            final Activity activity = this;
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Service")
+                    .setMessage("Would you like to delete this service? Doing so will remove all "
+                            + "time entries attached to this service. This action cannot be undone.")
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            }
+                    )
+                    .setPositiveButton("Delete Service",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    InvoiceTrackerDataSource dataSource = new InvoiceTrackerDataSource(context);
+                                    dataSource.deleteService(service);
+                                    dataSource.close();
+                                    dialog.cancel();
+                                    NavUtils.navigateUpFromSameTask(activity);
+                                }
+                            }
+                    ).create().show();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -18,7 +18,6 @@ import com.example.camirwin.invoicetracker.R;
  * to handle interaction events.
  * Use the {@link DeliverablesFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class DeliverablesFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -31,6 +30,10 @@ public class DeliverablesFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    public DeliverablesFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -48,9 +51,6 @@ public class DeliverablesFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-    public DeliverablesFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -98,7 +98,7 @@ public class DeliverablesFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

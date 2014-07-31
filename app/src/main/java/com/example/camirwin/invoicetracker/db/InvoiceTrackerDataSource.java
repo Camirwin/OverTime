@@ -158,7 +158,7 @@ public class InvoiceTrackerDataSource {
         // Cursor holding query for client by id
         Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_CLIENTS,
                 allClientColumns, InvoiceTrackerDBOpenHelper.CLIENTS_ID + " = ?",
-                new String[] { String.valueOf(clientId) }, null, null, null);
+                new String[]{String.valueOf(clientId)}, null, null, null);
 
         // Empty client variable to hold the client from the table if it exists
         Client client = null;
@@ -208,7 +208,7 @@ public class InvoiceTrackerDataSource {
         try {
             database.update(InvoiceTrackerDBOpenHelper.TABLE_CLIENTS, values,
                     InvoiceTrackerDBOpenHelper.CLIENTS_ID + " = ?",
-                    new String[] { String.valueOf(client.getId() )});
+                    new String[]{String.valueOf(client.getId())});
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -216,6 +216,15 @@ public class InvoiceTrackerDataSource {
 
         Log.i(LOGTAG, "Updated client " + client.getId());
         return client;
+    }
+
+    public void deleteClient(int clientId) {
+        // Query the clients table to delete the client with the supplied id
+        database.delete(InvoiceTrackerDBOpenHelper.TABLE_CLIENTS,
+                InvoiceTrackerDBOpenHelper.CLIENTS_ID + " = ?",
+                new String[]{String.valueOf(clientId)});
+
+        Log.i(LOGTAG, "Deleted client " + clientId);
     }
 
     public Services createService(Services service) {
@@ -254,7 +263,7 @@ public class InvoiceTrackerDataSource {
         Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_SERVICES,
                 allServiceColumns,
                 InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID + " = ?",
-                new String[] { String.valueOf(clientId) }, null, null, null);
+                new String[]{String.valueOf(clientId)}, null, null, null);
 
         if (cursor.getCount() > 0) {
             // Loop through values retrieved by cursor
@@ -281,37 +290,37 @@ public class InvoiceTrackerDataSource {
         return services;
     }
 
-   public Services getServiceById(int serviceId) {
-       // Variable to hold service
-       Services service = null;
+    public Services getServiceById(int serviceId) {
+        // Variable to hold service
+        Services service = null;
 
-       // Cursor holding query to database for all services for client
-       Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_SERVICES,
-               allServiceColumns,
-               InvoiceTrackerDBOpenHelper.SERVICES_ID + " = ?",
-               new String[] { String.valueOf(serviceId) }, null, null, null);
+        // Cursor holding query to database for all services for client
+        Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_SERVICES,
+                allServiceColumns,
+                InvoiceTrackerDBOpenHelper.SERVICES_ID + " = ?",
+                new String[]{String.valueOf(serviceId)}, null, null, null);
 
-       if (cursor.getCount() > 0) {
-           cursor.moveToFirst();
-           // Create service object from cursor location
-           service = new Services();
-           service.setId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_ID)));
-           service.setClientId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID)));
-           service.setInvoiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_INVOICE_ID)));
-           service.setName(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_NAME)));
-           service.setRate(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_RATE)));
-           service.setLastWorkedDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_LAST_WORKED_DATE)));
-           service.setOutstandingBalance(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_OUTSTANDING_BALANCE)));
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            // Create service object from cursor location
+            service = new Services();
+            service.setId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_ID)));
+            service.setClientId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_CLIENT_ID)));
+            service.setInvoiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_INVOICE_ID)));
+            service.setName(cursor.getString(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_NAME)));
+            service.setRate(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_RATE)));
+            service.setLastWorkedDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_LAST_WORKED_DATE)));
+            service.setOutstandingBalance(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.SERVICES_OUTSTANDING_BALANCE)));
 
-           Log.i(LOGTAG, "Retrieved service " + serviceId);
-       } else {
-           Log.i(LOGTAG, "No service " + serviceId + " found");
-       }
-       cursor.close();
+            Log.i(LOGTAG, "Retrieved service " + serviceId);
+        } else {
+            Log.i(LOGTAG, "No service " + serviceId + " found");
+        }
+        cursor.close();
 
-       // Return service
-       return service;
-   }
+        // Return service
+        return service;
+    }
 
     public Services updateService(Services service) {
         // Variable to hold map of values to columns
@@ -328,7 +337,7 @@ public class InvoiceTrackerDataSource {
         try {
             database.update(InvoiceTrackerDBOpenHelper.TABLE_SERVICES, values,
                     InvoiceTrackerDBOpenHelper.SERVICES_ID + " = ?",
-                    new String[] { String.valueOf(service.getId() )});
+                    new String[]{String.valueOf(service.getId())});
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -336,6 +345,26 @@ public class InvoiceTrackerDataSource {
 
         Log.i(LOGTAG, "Updated service " + service.getId());
         return service;
+    }
+
+    public void deleteService(Services service) {
+        ArrayList<TimeEntry> timeEntriesForService = getAllClockedOutTimeEntriesForService(service.getId());
+
+        // Query the services table to delete the service with the supplied id
+        database.delete(InvoiceTrackerDBOpenHelper.TABLE_SERVICES,
+                InvoiceTrackerDBOpenHelper.SERVICES_ID + " = ?",
+                new String[]{String.valueOf(service.getId())});
+
+        double outstandingBalanceToRemove = 0;
+        for (TimeEntry entry : timeEntriesForService) {
+            outstandingBalanceToRemove += entry.getEarnedIncome();
+        }
+
+        Client client = getClientById(service.getClientId());
+        client.setOutstandingServices(client.getOutstandingServices() - outstandingBalanceToRemove);
+        updateClient(client);
+
+        Log.i(LOGTAG, "Deleted service " + service.getId());
     }
 
     public TimeEntry createTimeEntry(TimeEntry timeEntry) {
@@ -371,8 +400,9 @@ public class InvoiceTrackerDataSource {
         Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES,
                 allTimeEntryColumns,
                 InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID + " = ? "
-                + "AND " + InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE + " IS NULL",
-                new String[] { String.valueOf(clientId) }, null, null, null);
+                        + "AND " + InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE + " IS NULL",
+                new String[]{String.valueOf(clientId)}, null, null, null
+        );
 
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -396,36 +426,6 @@ public class InvoiceTrackerDataSource {
         return null;
     }
 
-    public TimeEntry getClockedInEntryForService(int serviceId) {
-        // Cursor holding query to database for a time entry that is clocked in for the service
-        Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES,
-                allTimeEntryColumns,
-                InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID + " = ? "
-                        + "AND " + InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE + " IS NULL",
-                new String[] { String.valueOf(serviceId) }, null, null, null);
-
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-
-            TimeEntry timeEntry = new TimeEntry();
-            timeEntry.setId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_ID)));
-            timeEntry.setClientId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLIENT_ID)));
-            timeEntry.setServiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID)));
-            timeEntry.setInvoiceId(cursor.getInt(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_INVOICE_ID)));
-            timeEntry.setClockInDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_IN_DATE)));
-            timeEntry.setClockOutDate(cursor.getLong(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE)));
-            timeEntry.setRate(cursor.getDouble(cursor.getColumnIndex(InvoiceTrackerDBOpenHelper.TIME_ENTRIES_RATE)));
-
-            cursor.close();
-            Log.i(LOGTAG, "Retrieved clock in time entry " + timeEntry.getId() + " for service " + serviceId);
-            return timeEntry;
-        }
-
-        cursor.close();
-        Log.i(LOGTAG, "No clocked in time entry for service " + serviceId);
-        return null;
-    }
-
     public TimeEntry updateTimeEntry(TimeEntry timeEntry) {
         // Variable to hold map of values to columns
         ContentValues values = new ContentValues();
@@ -441,7 +441,7 @@ public class InvoiceTrackerDataSource {
         try {
             database.update(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES, values,
                     InvoiceTrackerDBOpenHelper.TIME_ENTRIES_ID + " = ?",
-                    new String[] { String.valueOf(timeEntry.getId() )});
+                    new String[]{String.valueOf(timeEntry.getId())});
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -469,8 +469,9 @@ public class InvoiceTrackerDataSource {
         Cursor cursor = database.query(InvoiceTrackerDBOpenHelper.TABLE_TIME_ENTRIES,
                 allTimeEntryColumns,
                 InvoiceTrackerDBOpenHelper.TIME_ENTRIES_SERVICE_ID + " = ? "
-                + "AND " + InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE + " NOT NULL",
-                new String[] { String.valueOf(serviceId) }, null, null, null);
+                        + "AND " + InvoiceTrackerDBOpenHelper.TIME_ENTRIES_CLOCK_OUT_DATE + " NOT NULL",
+                new String[]{String.valueOf(serviceId)}, null, null, null
+        );
 
         if (cursor.getCount() > 0) {
             // Loop through values retrieved by cursor

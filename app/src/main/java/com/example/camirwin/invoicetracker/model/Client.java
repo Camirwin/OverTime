@@ -108,6 +108,8 @@ public class Client {
         return new Date(getLastInvoiceDate());
     }
 
-    public Double getOutstandingBalance() { return OutstandingServices + OutstandingDeliverables + OutstandingExpenses; }
+    public Double getOutstandingBalance() {
+        return OutstandingServices + OutstandingDeliverables + OutstandingExpenses;
+    }
 
 }

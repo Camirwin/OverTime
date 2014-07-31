@@ -1,11 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.camirwin.invoicetracker.activity.ServiceActivity" >
-    <item android:id="@+id/action_clock_in_or_out"
-        android:title="Clock In/Out"
+    tools:context="com.example.camirwin.invoicetracker.activity.ServiceActivity">
+    <item
+        android:id="@+id/action_clock_in_or_out"
         android:icon="@drawable/ic_action_alarms"
-        android:showAsAction="always" />
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:showAsAction="never" />
+        android:showAsAction="always"
+        android:title="Clock In/Out" />
+    <item
+        android:id="@+id/action_edit_service"
+        android:showAsAction="never"
+        android:title="Edit Service" />
+    <item
+        android:id="@+id/action_delete_service"
+        android:showAsAction="never"
+        android:title="Delete Service" />
+    <item
+        android:id="@+id/action_settings"
+        android:showAsAction="never"
+        android:title="@string/action_settings" />
 </menu>

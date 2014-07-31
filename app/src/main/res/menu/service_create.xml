@@ -1,15 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.camirwin.invoicetracker.activity.ServiceCreateActivity" >
-    <item android:id="@+id/action_cancel"
-        android:title="Cancel"
+    tools:context="com.example.camirwin.invoicetracker.activity.ServiceCreateActivity">
+    <item
+        android:id="@+id/action_cancel"
         android:icon="@drawable/ic_action_cancel"
-        android:showAsAction="always" />
-    <item android:id="@+id/action_create_service"
-        android:title="Create Client"
+        android:showAsAction="always"
+        android:title="Cancel" />
+    <item
+        android:id="@+id/action_create_service"
         android:icon="@drawable/ic_action_accept"
-        android:showAsAction="always" />
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:showAsAction="never" />
+        android:showAsAction="always"
+        android:title="Create Client" />
+    <item
+        android:id="@+id/action_settings"
+        android:showAsAction="never"
+        android:title="@string/action_settings" />
 </menu>

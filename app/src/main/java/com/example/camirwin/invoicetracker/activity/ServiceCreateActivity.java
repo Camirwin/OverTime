@@ -48,9 +48,8 @@ public class ServiceCreateActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        }
-        else if (id == R.id.action_create_service) {
-            if(!etServiceName.getText().toString().isEmpty() && !etServiceRate.getText().toString().isEmpty()) {
+        } else if (id == R.id.action_create_service) {
+            if (!etServiceName.getText().toString().isEmpty() && !etServiceRate.getText().toString().isEmpty()) {
                 Services service = new Services();
                 service.setClientId(clientId);
                 service.setName(etServiceName.getText().toString());
@@ -67,8 +66,7 @@ public class ServiceCreateActivity extends Activity {
                     etServiceRate.setError("Service rate required");
                 }
             }
-        }
-        else if (id == R.id.action_cancel) {
+        } else if (id == R.id.action_cancel) {
             NavUtils.navigateUpFromSameTask(this);
         }
         return super.onOptionsItemSelected(item);

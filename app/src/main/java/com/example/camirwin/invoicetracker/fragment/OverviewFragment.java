@@ -29,7 +29,6 @@ import java.text.DecimalFormat;
  * to handle interaction events.
  * Use the {@link com.example.camirwin.invoicetracker.fragment.ExpensesFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class OverviewFragment extends ListFragment {
 
@@ -45,16 +44,16 @@ public class OverviewFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
 
+    public OverviewFragment() {
+        // Required empty public constructor
+    }
+
     public static OverviewFragment newInstance(int clientId) {
         OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
         args.putInt(CLIENT_ID, clientId);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public OverviewFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -94,7 +93,7 @@ public class OverviewFragment extends ListFragment {
         tvOutstandingDeliverables = (TextView) layout.findViewById(R.id.tvClientOutstandingDeliverables);
         tvOutstandingExpenses = (TextView) layout.findViewById(R.id.tvClientOutstandingExpenses);
 
-        String[] list = new String[] { "temp" };
+        String[] list = new String[]{"temp"};
         InvoiceAdapter adapter = new InvoiceAdapter(getActivity(), list);
         setListAdapter(adapter);
 
@@ -127,16 +126,12 @@ public class OverviewFragment extends ListFragment {
 
     @Override
     public void onPause() {
-        Log.i("InvoiceTracker", "Overview fragment paused");
-
         super.onPause();
         dataSource.close();
     }
 
     @Override
     public void onResume() {
-        Log.i("InvoiceTracker", "Overview fragment resumed");
-
         super.onResume();
         dataSource.open();
 
@@ -158,7 +153,7 @@ public class OverviewFragment extends ListFragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

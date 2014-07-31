@@ -1,10 +1,15 @@
 package com.example.camirwin.invoicetracker.activity;
 
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,17 +30,14 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
         ServicesFragment.OnServiceInteractionListener {
 
     ActionBar actionBar;
-    private TabsPagerAdapter mAdapter;
-    InvoiceTrackerDataSource dataSource;
     int clientId;
     String clientName;
-
-    String[] tabs = { "OVERVIEW", "SERVICES", "DELIVERABLES", "EXPENSES"};
-
+    String[] tabs = {"OVERVIEW", "SERVICES", "DELIVERABLES", "EXPENSES"};
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+    private TabsPagerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,32 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_delete_client) {
+            final Context context = this;
+            final Activity activity = this;
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Client")
+                    .setMessage("Would you like to delete this client? Doing so will remove all "
+                            + "invoices, services, time entries, deliverables, and expenses attached "
+                            + "to this client. This action cannot be undone.")
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            }
+                    )
+                    .setPositiveButton("Delete Client",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    InvoiceTrackerDataSource dataSource = new InvoiceTrackerDataSource(context);
+                                    dataSource.deleteClient(clientId);
+                                    dataSource.close();
+                                    dialog.cancel();
+                                    NavUtils.navigateUpFromSameTask(activity);
+                                }
+                            }
+                    ).create().show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -110,7 +138,10 @@ public class ClientActivity extends FragmentActivity implements ActionBar.TabLis
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
+        if (tab.getPosition() == 1) {
+            ServicesFragment servicesFragment = (ServicesFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 1);
+            servicesFragment.endActionMode();
+        }
     }
 
     @Override
