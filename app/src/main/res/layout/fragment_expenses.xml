@@ -4,10 +4,21 @@
     android:layout_height="match_parent"
     tools:context="com.example.camirwin.invoicetracker.fragment.ExpensesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Expenses fragment" />
+        android:choiceMode="multipleChoiceModal" />
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="You do not have any expenses for this client."
+        android:textColor="#50000000"
+        android:textSize="20sp" />
 
 </FrameLayout>

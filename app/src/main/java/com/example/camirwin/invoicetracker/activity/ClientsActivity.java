@@ -191,6 +191,10 @@ public class ClientsActivity extends ListActivity {
                     case R.id.action_edit:
                         return true;
                     case R.id.action_select_all:
+                        getListView().clearChoices();
+                        for (int i = 0; i < clients.size(); i++) {
+                            getListView().setItemChecked(i, true);
+                        }
                         return true;
                 }
 

@@ -247,7 +247,6 @@ public class ServicesFragment extends ListFragment {
 
                 @Override
                 public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
-                    final ActionMode finalMode = mode;
                     switch (menuItem.getItemId()) {
                         case R.id.action_clock_in:
                             clockIn();
@@ -263,6 +262,7 @@ public class ServicesFragment extends ListFragment {
                         case R.id.action_edit:
                             return true;
                         case R.id.action_select_all:
+                            selectAll();
                             return true;
                     }
 
@@ -428,6 +428,13 @@ public class ServicesFragment extends ListFragment {
         Intent intent = new Intent(getActivity(), ServiceActivity.class);
         intent.putExtra(SERVICE_ID, clockedInService.getId());
         startActivity(intent);
+    }
+
+    public void selectAll() {
+        getListView().clearChoices();
+        for (int i = 0; i < services.size(); i++) {
+            getListView().setItemChecked(i, true);
+        }
     }
 
     public void endActionMode() {
