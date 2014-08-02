@@ -9,7 +9,7 @@
         android:id="@+id/tvClockedInServiceHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffb4b4b4"
+        android:background="#ffd782"
         android:padding="5dp"
         android:text="ON THE CLOCK"
         android:textStyle="bold" />
@@ -86,7 +86,7 @@
                     android:gravity="right"
                     android:text="$170.00"
                     android:textColor="#ff07af08"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <Chronometer
                     android:id="@+id/chronTimeEntryTimeElapsed"
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="6h 48m 00s"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -113,7 +113,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffb4b4b4"
+        android:background="#ffd782"
         android:padding="5dp"
         android:text="OFF THE CLOCK"
         android:textStyle="bold" />

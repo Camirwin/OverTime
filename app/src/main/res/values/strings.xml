@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Invoice Tracker</string>
+    <string name="app_name">OverTime</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_create_client">Create Client</string>
@@ -12,5 +12,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_service_create">Create Service</string>
     <string name="title_activity_service">ServiceActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
 
 </resources>

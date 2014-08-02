@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.camirwin.invoicetracker">
+    package="com.example.camirwin.invoicetracker" >
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/overtime_big"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".activity.ClientsActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name=".activity.ClientCreateActivity"
             android:label="@string/title_activity_create_client"
             android:launchMode="singleTop"
-            android:parentActivityName=".activity.ClientsActivity">
+            android:parentActivityName=".activity.ClientsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.camirwin.invoicetracker.activity.ClientsActivity" />
@@ -29,7 +25,7 @@
             android:name=".activity.ClientActivity"
             android:label="@string/title_activity_client"
             android:launchMode="singleTop"
-            android:parentActivityName=".activity.ClientsActivity">
+            android:parentActivityName=".activity.ClientsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.camirwin.invoicetracker.activity.ClientsActivity" />
@@ -38,7 +34,7 @@
             android:name=".activity.ServiceCreateActivity"
             android:label="@string/title_activity_service_create"
             android:launchMode="singleTop"
-            android:parentActivityName=".activity.ClientActivity">
+            android:parentActivityName=".activity.ClientActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.camirwin.invoicetracker.activity.ClientActivity" />
@@ -47,10 +43,20 @@
             android:name=".activity.ServiceActivity"
             android:label="@string/title_activity_service"
             android:launchMode="singleTop"
-            android:parentActivityName=".activity.ClientActivity">
+            android:parentActivityName=".activity.ClientActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.camirwin.invoicetracker.activity.ClientActivity" />
+        </activity>
+        <activity
+            android:name=".activity.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

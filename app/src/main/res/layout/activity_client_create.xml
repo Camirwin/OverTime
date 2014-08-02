@@ -18,7 +18,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ffb4b4b4"
+                android:background="#ffd782"
                 android:padding="5dp"
                 android:text="CLIENT INFORMATION"
                 android:textStyle="bold" />
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="#ffb4b4b4"
+                android:background="#ffd782"
                 android:padding="5dp"
                 android:text="POINT OF CONTACT"
                 android:textStyle="bold" />
